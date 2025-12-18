@@ -56,8 +56,9 @@ y_t <- x_t + eps_t
 
 D <- diag(1, Tt) - cbind(rbind(rep(0, Tt - 1),diag(1, Tt - 1)),rep(0, Tt))
 
-iV <- diag(c(ss[1]^(-2), rep(ss[2]^(-2), Tt - 1)))
+iV <- diag(c(ss[1]^(-2), rep(ss[2]^(-2), Tt - 1))) 
 
+# prior precision
 Omega <- t(D) %*% iV %*% D
 
 post_prec <- Omega + diag(rep(sigma^(-2),Tt))
