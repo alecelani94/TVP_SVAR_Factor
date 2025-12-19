@@ -19,8 +19,7 @@ Tt   <- 250
 time <- 1:Tt
 
 # process noise st. dev.
-mu    <- .05
-sigma <- .5 
+sigma <- 1 
 
 # states noise st. devs.
 ss <- c(1, .2)
@@ -38,6 +37,10 @@ title_plot = c("unconstrained","truncated")
 ##################
 
 eps <- rnorm(Tt, 0, sigma)
+
+x <- log(time)
+
+y <- x + eps
 
 y <- numeric(Tt)
 y[1] <- 0

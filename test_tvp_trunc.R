@@ -3,6 +3,7 @@ rm(list=ls())
 
 library("hdtg")
 library("Matrix")
+library("coda")
 
 set.seed(123456)
 
@@ -17,14 +18,14 @@ MCMC <- 5000
 burn <- 1000
 
 # time dimension
-Tt   <- 250
+Tt   <- 300
 time <- 1:Tt
 
 # process noise st. dev.
-sigma <- 0.5 
+sigma_e <- 0.5 
 
 # states noise st. devs.
-ss <- c(5, .1)
+sigma_ss <- c(5, .1)
 
 # zigzag HMC trunc. bounds
 lb <- cbind(rep(-Inf,Tt),rep(0,Tt))
@@ -41,7 +42,7 @@ title_plot = c("unconstrained","truncated")
 ##################
 
 # noise
-eps_t <- rnorm(Tt, mean = 0, sd = sigma)
+eps_t <- rnorm(Tt, mean = 0, sd = sigma_e)
 
 # positive signal
 x_t <- cos(time/(Tt/10))
@@ -56,13 +57,13 @@ y_t <- x_t + eps_t
 
 D <- diag(1, Tt) - cbind(rbind(rep(0, Tt - 1),diag(1, Tt - 1)),rep(0, Tt))
 
-iV <- diag(c(ss[1]^(-2), rep(ss[2]^(-2), Tt - 1))) 
+iV <- diag(c(sigma_ss[1]^(-2), rep(sigma_ss[2]^(-2), Tt - 1))) 
 
 # prior precision
 Omega <- t(D) %*% iV %*% D
 
-post_prec <- Omega + diag(rep(sigma^(-2),Tt))
-post_mean <- solve(post_prec) %*% (y_t / sigma^(2))
+post_prec <- Omega + diag(rep(sigma_e^(-2),Tt))
+post_mean <- solve(post_prec) %*% (y_t / sigma_e^(2))
 
 chol_post_prec <- chol(post_prec)
 
@@ -88,7 +89,6 @@ for (i in 1:2){
                                constrainDirec = Fh, constrainBound = gh[,i], 
                                init = rep(mean(y_t), Tt))  
      }
-     
      
      t1 <- Sys.time()
      
@@ -118,4 +118,10 @@ for (i in 1:2){
             col    = c("black","red",rgb(0.6, 0.8, 1.0, alpha = 0.4),"blue"),
             lwd    = c(1, 2, NA, 3),lty    = c(1, 1, NA, 2),pch    = c(NA, NA, 15, NA),
             pt.cex = c(NA, NA, 2, NA), bty    = "o")
+     
+     chain <- mcmc(draws_mu)
+     ess  <- unname(effectiveSize(chain))/MCMC
+     
+     # effective sample size
+     boxplot(ess, main = "relative ess",ylab = "",col = "lightblue")
 }
