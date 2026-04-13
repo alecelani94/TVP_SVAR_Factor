@@ -1,0 +1,20 @@
+{
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#8b1a1a",
+        "titleBar.activeForeground": "#ffffff",
+        "titleBar.inactiveBackground": "#5c1111",
+        "titleBar.inactiveForeground": "#cccccc",
+        "activityBar.background": "#8b1a1a",
+        "activityBar.foreground": "#ffffff",
+        "statusBar.background": "#8b1a1a",
+        "statusBar.foreground": "#ffffff",
+        "statusBar.debuggingBackground": "#8b1a1a",
+        "statusBar.noFolderBackground": "#5c1111",
+        "sideBar.background": "#2e1c1c",
+        "sideBarTitle.foreground": "#ffffff",
+        "panel.border": "#8b1a1a",
+        "tab.activeBackground": "#2e1c1c",
+        "tab.activeBorderTop": "#8b1a1a"
+    },
+    "window.title": "TVP-SVAR-FACTOR — ${activeEditorShort}"
+}
